@@ -23,7 +23,7 @@ fechaActualizacion DateTime @default(now())
 
 model Clientes {
 id Int @id @default(autoincrement())
-tipoDocumento String 
+tipoDocumento String
 noDocumento String @unique
 edad Int
 nombres String
@@ -40,6 +40,8 @@ fechaActualizacion DateTime @default(now())
 
 model Productos {
 id Int @id @default(autoincrement())
+categoria Categorias @relation(fields: [categoriaId], references: [id])
+categoriaId Int
 nombre String
 precio Decimal
 imagen String @default("https://via.placeholder.com/300")
@@ -54,6 +56,7 @@ id Int @id @default(autoincrement())
 nombre String
 fechaCreacion DateTime @default(now())
 fechaActualizacion DateTime @default(now())
+productos Productos []
 }
 
 model Pedidos {
@@ -64,6 +67,7 @@ subtotal Decimal
 total Decimal
 fechaCreacion DateTime @default(now())
 fechaActualizacion DateTime @default(now())
+pedidosItems PedidosItems []
 }
 
 model PedidosItems {
@@ -72,6 +76,8 @@ producto Productos @relation(fields: [productoId], references: [id])
 productoId Int
 cantidad Int
 subtotal Decimal
+pedidos Pedidos @relation(fields: [pedidosId], references: [id])
+pedidosId Int
 fechaCreacion DateTime @default(now())
 fechaActualizacion DateTime @default(now())
 }
