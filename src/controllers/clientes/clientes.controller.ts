@@ -5,7 +5,11 @@ const prisma = new PrismaClient();
 
 const getMethod = async(req: Request, res: Response) => {
     try {
-        const result = await prisma.clientes.findMany();
+        const result = await prisma.clientes.findMany({
+            orderBy: {
+                id: 'asc'
+            }
+        });
         return res.status(200).json(result);
     } catch (error) {
         console.log("error::controller::clientes", error);
@@ -17,6 +21,9 @@ const getMethodById = async(req: Request, res: Response) => {
     const {id} = req.params;
     try {
         const result = await prisma.clientes.findUnique({ where: {id: Number(id)}});
+        console.log(result);
+        if (!result)
+            return res.status(204).json({message: 'Not found'});
         return res.status(200).json(result);
     } catch (error) {
         console.log("error::controller::clientes", error);
