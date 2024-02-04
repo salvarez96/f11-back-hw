@@ -5,7 +5,11 @@ const prisma = new PrismaClient();
 
 const getMethod = async(req: Request, res: Response) => {
     try {
-        const result = await prisma.categorias.findMany();
+        const result = await prisma.categorias.findMany({
+            orderBy: {
+                id: 'asc'
+            }
+        });
         return res.status(200).json(result);
     } catch (error) {
         console.log("error::controller::categorias", error);

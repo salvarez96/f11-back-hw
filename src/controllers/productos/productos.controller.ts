@@ -4,8 +4,17 @@ import { Request, Response } from "express";
 const prisma = new PrismaClient();
 
 const getMethod = async(req: Request, res: Response) => {
+    const categoryId = Number(req.query['category_id'])
     try {
-        const result = await prisma.productos.findMany();
+        if (!categoryId) {
+            const result = await prisma.productos.findMany();
+            return res.status(200).json(result);    
+        }
+        const result = await prisma.productos.findMany({
+            where: {
+                categoriaId: categoryId
+            }
+        });
         return res.status(200).json(result);
     } catch (error) {
         console.log("error::controller::productos", error);
